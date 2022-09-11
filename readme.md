@@ -13,7 +13,8 @@ To remove a channel you can do two things. Either navigate to the chrome extensi
 #### *There is a refresh rate option, depending on your internet speed you may want to make this higher or lower*
 
 ### How do I install?
-To install this plugin as is you need to clone this repo, or download it as a zip.
+To install this plugin as is you need to clone this repo, or download it as a zip. 
+>Click CODE and click download as ZIP
 After installing navigate to
 >chrome://extensions
 Click on the toggle switch on the top right labeled *Developer Mode*
