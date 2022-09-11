@@ -1,0 +1,108 @@
+body{
+    position: relative;
+    background-color: #fef3ef;
+    padding:50px;
+    margin:0;
+    width: fit-content;
+}
+.container{
+    padding: 0 75px;
+    height:250px;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
+    align-content: center;
+}
+#footer{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: calc(100% - 10px);
+    padding: 0 5px;
+}
+
+.middletext{
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.arrow{
+    position: absolute;
+    right:50%;
+    top: 0;
+    transform: translate(52%, -13%);
+    font-size: 24px;
+    font-weight: bold;
+    color:#fef3ef;
+}
+
+.toggle{
+    left:25px;
+    top:15px;
+    position: absolute;
+    background-color: #fe6d73;
+    padding:5px 7.5px;
+    transform: scale(1.5);
+    user-select: none;
+    cursor: pointer;
+    transition: 1s all;
+}
+.toggle.on{
+    background-color: #09f587;
+}
+
+navigationbutton{
+    position: relative;
+    width: 24px;
+    height: 24px;
+    background-color: #1c77c3;
+    user-select: none;
+    transition: .5s all, .1s background-color;
+    cursor: pointer;
+}
+.disable{
+    opacity: .5;
+    cursor: not-allowed;
+}
+navigationbutton:active{
+    background-color: #fe6d73;
+}
+navigationbutton:hover{
+    transform: scale(1.25);
+}
+channel{
+    background-color: #fe6d73;
+    color:black;
+    font-size:24px;
+    padding:5px 20px;
+    min-width:100px;
+    /* max-width: 175px; */
+    user-select: none;
+    transition: 1s all, .2s background-color;
+    margin: 5px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+channel chan-contain{
+    height: 29px;
+    max-width:100px;
+    white-space: nowrap;
+    /* display: flex; */
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+
+}
+channel chan-contain span{
+
+}
+channel:hover{
+    transform: scale(1.15);
+}
+channel:active{
+    background-color: #1c77c3;
+}

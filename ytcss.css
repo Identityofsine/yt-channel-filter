@@ -1,4 +1,6 @@
-.cusadd{
+.cusadd,.cusremove{
+    position: absolute;
+    right:50%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -13,17 +15,6 @@
     color:green;
 }
 
-.cusremove{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    width:10%;
-    padding:0;
-    color:#EEEEEE;
-    transition: all .2s;
-    background-color: #30343f;
-}
 .cusremove:hover{
     color:red;
 }

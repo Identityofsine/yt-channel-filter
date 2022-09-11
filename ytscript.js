@@ -1,10 +1,11 @@
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 var channels;
-chrome.storage.sync.get(['channels'], (data) => {channels = data.channels;});
+chrome.storage.local.get(['channels'], (data) => {channels = data.channels;});
 
 async function saveChannels(channel){
-    await chrome.storage.sync.set({'channels': channel});
+    await chrome.storage.local.set({'channels': channel});
 }
+
 
 function removeChannel(channel){
   var index = channels.indexOf(channel);
