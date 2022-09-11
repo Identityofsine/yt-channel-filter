@@ -11,7 +11,7 @@ chrome.runtime.onInstalled.addListener(
           });
           chrome.storage.local.get(['channels'], function(items) {
             if(!items.channels){
-                chrome.storage.sync.set({'channels': []}, function() {
+                chrome.storage.local.set({'channels': []}, function() {
                     console.log('Channels Settings Created');
                   });
             }
@@ -41,14 +41,14 @@ chrome.runtime.onStartup.addListener(
         chrome.storage.sync.get(['channels'], function(items) {
             if(!items.channels){
                 chrome.storage.sync.set({'channels': []}, function() {
-                    console.log('Settings Created');
+                    console.log('Channels Settings Created');
                   });
             }
           });
           chrome.storage.local.get(['channels'], function(items) {
             if(!items.channels){
-                chrome.storage.sync.set({'channels': []}, function() {
-                    console.log('Settings Created');
+                chrome.storage.local.set({'channels': []}, function() {
+                    console.log('Channels Settings Created');
                   });
             }
           });

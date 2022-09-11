@@ -4,7 +4,7 @@ var channel;
 var page = 1;
 var pages = 1;
 var sleep;
-chrome.storage.local.get(['channels'], (data) => {channel = data.channels; load(); onRunTime();})
+chrome.storage.sync.get(['channels'], (data) => {channel = data.channels; load(); onRunTime();})
 
 
 function calibrateSleepTimer(){

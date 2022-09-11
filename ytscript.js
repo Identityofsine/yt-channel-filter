@@ -2,13 +2,13 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 var sleepTime;
 var channels;
 var reverse;
-chrome.storage.local.get(['channels'], (data) => {channels = data.channels;});
+chrome.storage.sync.get(['channels'], (data) => {channels = data.channels;});
 chrome.storage.local.get(['sleep'], (data) => {sleepTime = data.sleep;});
 chrome.storage.local.get(['reverse'], (data) => {reverse = data.reverse;});
 
 
 async function saveChannels(channel){
-    await chrome.storage.local.set({'channels': channel});
+    await chrome.storage.sync.set({'channels': channel});
 }
 
 
