@@ -13,9 +13,10 @@ This is done by letting the user select channels they think would be productive 
 #### *There is a refresh rate option, depending on your internet speed you may want to make this higher or lower*
 
 ### How do I install?
-    To install this plugin using the .CRX, download this plugin from the releases tab
-    >https://github.com/Identityofsine/yt-channel-filter/releases/tag/v2.0.0
+    To install this plugin as is you need to clone this repo, or download it as a zip.
     After installing navigate to
     >chrome://extensions
     Click on the toggle switch on the top right labeled *Developer Mode*
-    Dra
+    You should see a button named **Load Unpacked**, click on this and navigate to the extracted folder.
+
+#### This process should get a lot easier when it is uploaded to the chrome store.
