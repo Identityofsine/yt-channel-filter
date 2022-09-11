@@ -21,7 +21,13 @@ chrome.runtime.onInstalled.addListener(
             chrome.storage.local.set({'on': "true"}, function() {
                 console.log('Settings Created');
             });
-     });
+        });
+        chrome.storage.local.get(['sleep'], function(items) {
+            if(!items.sleep)
+            chrome.storage.local.set({'sleep': "2000"}, function() {
+                console.log('Settings Created');
+            });
+        });
     }
 )
 chrome.runtime.onStartup.addListener(
@@ -46,6 +52,12 @@ chrome.runtime.onStartup.addListener(
                 console.log('Settings Created');
             });
           });
+          chrome.storage.local.get(['sleep'], function(items) {
+            if(!items.sleep)
+            chrome.storage.local.set({'sleep': "2000"}, function() {
+                console.log('Settings Created');
+            });
+        });
     }
 )
 
@@ -65,15 +77,13 @@ async function(tabId, changeInfo, tab) {
                 chrome.storage.local.get(['on'], async (data) => {
                     if(pathname.split("/")[1] !== "channel" && pathname.split("/")[1] !== "c" && pathname.split("/")[1] !== 'user')
                     {
-                        while(data.on !== "false"){
-                            await sleep(2000);     
+                        //while(data.on !== "false"){
                             // pathname === "/" ? 'watch' ? pathname === '/watch'
-                            console.log(data.on)
                             chrome.tabs.sendMessage( tabId, {
                                 message:pathname === "/" ? 'home' : pathname === '/watch' ? 'watch' :'na',
                                 url: tab.url
                             })
-                        }
+                        //}
                     }
                     else{
                         chrome.tabs.sendMessage( tabId, {

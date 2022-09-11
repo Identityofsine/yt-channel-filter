@@ -1,7 +1,7 @@
 {
   "name": "Youtube Channel Filter",
-  "description": "Become more productive by filtering out channels.",
-  "version": "1.0",
+  "description": "Become more productive by only allowing channels you want to see! Both in the homepage and in recommendations! Add channels by going to their page and clicking \"Add Channel\".",
+  "version": "2.0",
   "manifest_version": 3,
   "background": {
     "service_worker": "background.js"

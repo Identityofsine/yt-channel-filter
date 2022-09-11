@@ -3,9 +3,34 @@
 var channel;
 var page = 1;
 var pages = 1;
-    
-chrome.storage.local.get(['channels'], (data) => {channel = data.channels; loadToggle(); onRunTime();})
+var sleep;
+chrome.storage.local.get(['channels'], (data) => {channel = data.channels; load(); onRunTime();})
 
+
+function calibrateSleepTimer(){
+    const sleepBox = document.getElementById("sleepTime");
+    chrome.storage.local.get(['sleep'], (data) => {
+        sleep = data.sleep;
+        sleepBox.value = sleep
+    })
+
+    function onChange(e){
+        if(isNaN(e.target.value)){
+            e.target.value = sleep;
+        } else{
+            sleep = e.target.value;
+            chrome.storage.local.set({"sleep":sleep}, function() {
+                console.log("Sleep Set!");
+            });
+        }
+    }
+    sleepBox.onchange = onChange
+}
+
+function load(){
+    loadToggle()
+    calibrateSleepTimer();
+}
 
 function getDOM(){
     const div = document.getElementById("yt-channels");

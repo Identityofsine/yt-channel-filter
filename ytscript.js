@@ -1,6 +1,8 @@
 const sleep = ms => new Promise(r => setTimeout(r, ms));
+var sleepTime;
 var channels;
 chrome.storage.local.get(['channels'], (data) => {channels = data.channels;});
+chrome.storage.local.get(['sleep'], (data) => {sleepTime = data.sleep;});
 
 async function saveChannels(channel){
     await chrome.storage.local.set({'channels': channel});
@@ -28,7 +30,6 @@ chrome.runtime.onMessage.addListener(
     // listen for messages sent from background.js
     //hello!
     
-      console.info("ran")
       if (request.message === 'channel'){
         const channelName = document.getElementsByTagName("ytd-channel-name")[0]
         const _ChannelName = channelName.childNodes[1].childNodes[1].firstChild.nextSibling.innerText;
@@ -81,39 +82,99 @@ chrome.runtime.onMessage.addListener(
         }
         
         if (request.message === 'watch') {
+          const watchFunction = async (data) => {
             const channels = document.getElementsByTagName("ytd-compact-video-renderer")
-            //const channels = document.getElementById("related").querySelector('#items').childNodes[1].querySelector('#contents').childNodes;
-            const scroller = document.querySelectorAll("#spinnerContainer")
-            //console.log(scroller)
-            for(let x in scroller){
-              const s = scroller[x];
-              console.log(s);
-              if(s?.remove)
-              s.remove();
-            }
             for(let x in channels){
               const c = channels[x]
               if(c?.querySelector){
                   const channelName = channels[x]?.querySelector(".ytd-channel-name").querySelector("#text").innerHTML;
                   //console.log(channelName);
-                  if(channelName !== "Hamza"){
-                    c.remove();
+                  if(!contains(channelName)){
+                    c.style.display = "none";
                   }
               }
-              //scroller.remove();    
             }
+            while(data === "true"){
+              await sleep(sleepTime);  
+              //const channels = document.getElementById("related").querySelector('#items').childNodes[1].querySelector('#contents').childNodes;
+              const scroller = document.querySelectorAll("#spinnerContainer")
+              //console.log(scroller)
+              for(let x in scroller){
+                const s = scroller[x];
+                if(s?.remove)
+                s.remove();
+              }
+              for(let x in channels){
+                const c = channels[x]
+                if(c?.querySelector){
+                    const channelName = channels[x]?.querySelector(".ytd-channel-name").querySelector("#text").innerHTML;
+                    //console.log(channelName);
+                    if(!contains(channelName)){
+                      c.remove();
+                    }
+                }
+                //scroller.remove();    
+              }
+              const blankRec = document.getElementsByTagName("ytd-continuation-item-renderer")
+              for(let x in blankRec){
+                blankRec[x]?.remove();
+              }
+
+            }
+            //end of function
+          }
+          chrome.storage.local.get(['on'], data => {
+            if(data.on === "true")
+              watchFunction(data.on);
+          })
       }
       if(request.message === "home"){
-        const videos = document.getElementsByTagName("ytd-rich-item-renderer")
-        for(let x in videos){
-          const video = videos[x];
-          if(video?.childNodes){
-            const channelName = video?.childNodes[1]?.firstChild?.childNodes[1]?.lastChild?.childNodes[1]?.childNodes[1]?.childNodes[2]?.childNodes[1]?.childNodes[1]?.childNodes[1]?.childNodes[1]?.childNodes[0]?.nextSibling?.outerText;
-            if(!contains(channelName)){
-              video.remove();
+        const homeFunction = async (data) => {
+          while(data === "true"){
+            const videos = document.getElementsByTagName("ytd-rich-item-renderer")
+            for(let x in videos){
+              const video = videos[x];
+              if(video?.childNodes){
+                const channelName = video?.childNodes[1]?.firstChild?.childNodes[1]?.lastChild?.childNodes[1]?.childNodes[1]?.childNodes[2]?.childNodes[1]?.childNodes[1]?.childNodes[1]?.childNodes[1]?.childNodes[0]?.nextSibling?.outerText;
+                if(!contains(channelName)){
+                  video.style.display = 'none';
+                }
+              }
+            }
+            await sleep(sleepTime);  
+            for(let x in videos){
+              const video = videos[x];
+              if(video?.childNodes){
+                const channelName = video?.childNodes[1]?.firstChild?.childNodes[1]?.lastChild?.childNodes[1]?.childNodes[1]?.childNodes[2]?.childNodes[1]?.childNodes[1]?.childNodes[1]?.childNodes[1]?.childNodes[0]?.nextSibling?.outerText;
+                if(!contains(channelName)){
+                  video.remove();
+                }
+              }
+            }
+            const row = document.getElementsByTagName("ytd-rich-grid-row");
+            try{
+              for(let x in row){
+                const content = row[x]?.querySelector("#contents")
+                // console.log(content);
+                if(content){
+                  if(!content.hasChildNodes())
+                    row[x]?.remove()
+                }
+                if(!row[x]?.childNodes[1].hasChildNodes){
+                  console.log("removal!")
+                  row[x].remove();
+                }
+              }
+            }
+            catch(e) {
+              //e --> something went wrong...
             }
           }
         }
+        chrome.storage.local.get(['on'], data => {
+          if(data.on === "true")
+            homeFunction(data.on);
+        })
       }
   });
 
