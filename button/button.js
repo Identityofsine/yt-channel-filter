@@ -13,7 +13,6 @@ function calibrateSleepTimer(){
         sleep = data.sleep;
         sleepBox.value = sleep
     })
-
     function onChange(e){
         if(isNaN(e.target.value)){
             e.target.value = sleep;
@@ -27,9 +26,38 @@ function calibrateSleepTimer(){
     sleepBox.onchange = onChange
 }
 
+function loadReverse(){
+    const div = document.getElementById("reverse")
+    chrome.storage.local.get(['reverse'], function(data){
+        if(data.reverse){
+            div.classList.add("on");
+            div.innerText = 'ON';
+        } else {
+            div.classList.remove("on")
+            div.innerText = 'OFF'
+        }
+    })
+    function onClick(){
+        chrome.storage.local.get(['reverse'], function(data){
+            const alternate = !data.reverse
+            chrome.storage.local.set({reverse:alternate}, e => {
+                if(alternate){
+                    div.classList.add("on");
+                    div.innerText = 'ON';
+                } else {
+                    div.classList.remove("on")
+                    div.innerText = 'OFF'
+                }
+            })
+        });
+    }
+    div.onclick = onClick
+}
+
 function load(){
     loadToggle()
     calibrateSleepTimer();
+    loadReverse();
 }
 
 function getDOM(){

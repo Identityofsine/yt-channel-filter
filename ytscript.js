@@ -1,8 +1,11 @@
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 var sleepTime;
 var channels;
+var reverse;
 chrome.storage.local.get(['channels'], (data) => {channels = data.channels;});
 chrome.storage.local.get(['sleep'], (data) => {sleepTime = data.sleep;});
+chrome.storage.local.get(['reverse'], (data) => {reverse = data.reverse;});
+
 
 async function saveChannels(channel){
     await chrome.storage.local.set({'channels': channel});
@@ -109,7 +112,8 @@ chrome.runtime.onMessage.addListener(
                 if(c?.querySelector){
                     const channelName = channels[x]?.querySelector(".ytd-channel-name").querySelector("#text").innerHTML;
                     //console.log(channelName);
-                    if(!contains(channelName)){
+                    const condition = reverse ? contains(channelName) : !contains(channelName);
+                    if(condition){
                       c.remove();
                     }
                 }
@@ -136,7 +140,8 @@ chrome.runtime.onMessage.addListener(
               const video = videos[x];
               if(video?.childNodes){
                 const channelName = video?.childNodes[1]?.firstChild?.childNodes[1]?.lastChild?.childNodes[1]?.childNodes[1]?.childNodes[2]?.childNodes[1]?.childNodes[1]?.childNodes[1]?.childNodes[1]?.childNodes[0]?.nextSibling?.outerText;
-                if(!contains(channelName)){
+                const condition = reverse ? contains(channelName) : !contains(channelName);
+                if(condition){
                   video.style.display = 'none';
                 }
               }
@@ -146,7 +151,8 @@ chrome.runtime.onMessage.addListener(
               const video = videos[x];
               if(video?.childNodes){
                 const channelName = video?.childNodes[1]?.firstChild?.childNodes[1]?.lastChild?.childNodes[1]?.childNodes[1]?.childNodes[2]?.childNodes[1]?.childNodes[1]?.childNodes[1]?.childNodes[1]?.childNodes[0]?.nextSibling?.outerText;
-                if(!contains(channelName)){
+                const condition = reverse ? contains(channelName) : !contains(channelName);
+                if(condition){
                   video.remove();
                 }
               }
