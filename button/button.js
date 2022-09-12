@@ -6,6 +6,9 @@ var pages = 1;
 var sleep;
 chrome.storage.sync.get(['channels'], (data) => {channel = data.channels; load(); onRunTime();})
 
+function save(){
+    chrome.storage.sync.set({channels:channel});
+}
 
 function calibrateSleepTimer(){
     const sleepBox = document.getElementById("sleepTime");
@@ -165,7 +168,7 @@ async function ButtonOnClick(i){
     console.log(channel)
     await rerenderItems(getDOM());
     onRunTime();
-    chrome.storage.local.set({'channels': channel})
+    chrome.storage.sync.set({'channels': channel})
 }
 
 async function onRunTime() {
