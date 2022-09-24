@@ -1,8 +1,9 @@
-
+const sleepFunc = ms => new Promise(r => setTimeout(r, ms));
 //do this on load
 var channel;
 var page = 1;
 var pages = 1;
+const limit = 12;
 var sleep;
 chrome.storage.sync.get(['channels'], (data) => {channel = data.channels; load(); onRunTime();})
 
@@ -60,6 +61,9 @@ function loadReverse(){
 function load(){
     loadToggle()
     calibrateSleepTimer();
+    timerOnClick();
+    grabTime();
+    think(); // start thinker
     loadReverse();
 }
 
@@ -114,7 +118,7 @@ var goLeft = async e => {
     page = page - 1;
     changePageText();
     await rerenderItems(getDOM());
-    for(let i = (page - 1) * 10; i < 10; i++){
+    for(let i = (page - 1) * 12; i < 12; i++){
         console.log(channel[i]);
         getDOM().appendChild(createChannelNode(channel[i], i)); 
     }
@@ -126,7 +130,7 @@ var goRight = async e => {
     page = page + 1;
     changePageText();
     await rerenderItems(getDOM());
-    for(let i = 1 * 10; i < channel.length; i++){
+    for(let i = 1 * 12; i < channel.length; i++){
         getDOM().appendChild(createChannelNode(channel[i], i));
     }
 }
@@ -171,12 +175,37 @@ async function ButtonOnClick(i){
     chrome.storage.sync.set({'channels': channel})
 }
 
+
+async function timerOnClick(){
+    const timeBox = document.getElementById("timerContainer");
+    timeBox.onclick = () => {chrome.storage.sync.set({"time":0}, () => {}); console.log("CLEAR")};
+    
+}
+
+async function grabTime(){
+    const timeBox = document.getElementById("timerContainer");
+    const timeText = timeBox;
+    await chrome.storage.sync.get(['time'], (data) => {
+        time = data.time;
+        timeText.innerText = new Date(time * 1000).toISOString().substr(11, 8);
+    })
+}
+
+async function think(){
+    //this function thinks every second
+    while(true){
+        await sleepFunc(1000);
+        grabTime();
+    }
+}
+
 async function onRunTime() {
     const div = getDOM();
     document.getElementById("toggle").onclick = toggle
-    const length = (channel.length <= 10) ? channel.length : 10
-    if(channel.length > 10){
-        pages = Math.floor(channel.length / 10) + 1;
+    
+    const length = (channel.length <= limit) ? channel.length : limit
+    if(channel.length > limit){
+        pages = Math.floor(channel.length / limit) + 1;
         enableFooter();
         changePageText();
     }

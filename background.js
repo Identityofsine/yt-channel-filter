@@ -2,12 +2,21 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 chrome.runtime.onInstalled.addListener(
     () => {
+
         chrome.storage.sync.get(['channels'], function(items) {
             if(!items.channels){
                 chrome.storage.sync.set({'channels': []}, function() {
                     console.log('Channels Settings Created');
                   });
             }
+          });
+          chrome.storage.sync.get(['time'], function(items) {
+            if(!items.time){                
+                chrome.storage.sync.set({'time': 0}, function() {
+                    console.info('Timer Created');
+                  });
+            }
+
           });
           chrome.storage.local.get(['channels'], function(items) {
             if(!items.channels){
@@ -42,6 +51,13 @@ chrome.runtime.onStartup.addListener(
             if(!items.channels){
                 chrome.storage.sync.set({'channels': []}, function() {
                     console.log('Channels Settings Created');
+                  });
+            }
+          });
+          chrome.storage.sync.get(['time'], function(items) {
+            if(!items.time){
+                chrome.storage.sync.set({'time': 0}, function() {
+                    console.info('Timer Created');
                   });
             }
           });

@@ -2,7 +2,10 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 var sleepTime;
 var channels;
 var reverse;
+var totalTime;
+var isAlreadyCounting;
 chrome.storage.sync.get(['channels'], (data) => {channels = data.channels;});
+chrome.storage.sync.get(['time'], (data) => {totalTime = data.time; console.info(data)});
 chrome.storage.local.get(['sleep'], (data) => {sleepTime = data.sleep;});
 chrome.storage.local.get(['reverse'], (data) => {reverse = data.reverse;});
 
@@ -11,6 +14,9 @@ async function saveChannels(channel){
     await chrome.storage.sync.set({'channels': channel});
 }
 
+async function saveTime(time){
+  await chrome.storage.sync.set({'time':time})
+}
 
 function removeChannel(channel){
   var index = channels.indexOf(channel);
@@ -27,12 +33,23 @@ function contains(channelName){
   }
   return false;
 }
+const updateTime = async () => {
+  if(isAlreadyCounting) return;
+  isAlreadyCounting = true;
+  while(true){
+    //run this loop for ever(in the background)
+    await sleep(1000); // wait one second
+    totalTime = totalTime + 1;
+    await saveTime(totalTime);
+    console.info(totalTime) // update value
+  }
+} //this async function updates the time variable every second
 
 chrome.runtime.onMessage.addListener(
   async function(request, sender, sendResponse) {
     // listen for messages sent from background.js
     //hello!
-    
+      updateTime();
       if (request.message === 'channel'){
         const channelName = document.getElementsByTagName("ytd-channel-name")[0]
         const _ChannelName = channelName.childNodes[1].childNodes[1].firstChild.nextSibling.innerText;

@@ -1,12 +1,12 @@
 {
   "name": "Youtube Channel Filter",
   "description": "Become more productive by only allowing channels you want to see! Both in the homepage and in recommendations!",
-  "version": "2.0",
+  "version": "3.0",
   "manifest_version": 3,
   "background": {
     "service_worker": "background.js"
   },
-  "permissions":["storage", "activeTab", "scripting", "tabs"],
+  "permissions":["storage",  "tabs"],
   "host_permissions": [
     "https://www.youtube.com/",
     "https://*.youtube.com/"
