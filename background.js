@@ -10,9 +10,10 @@ chrome.runtime.onInstalled.addListener(
                   });
             }
           });
-          chrome.storage.sync.get(['time'], function(items) {
+          chrome.storage.local.get(['time'], function(items) {
+            console.log(items);
             if(!items.time){                
-                chrome.storage.sync.set({'time': 0}, function() {
+                chrome.storage.local.set({'time': 0.00}, function() {
                     console.info('Timer Created');
                   });
             }
@@ -54,9 +55,9 @@ chrome.runtime.onStartup.addListener(
                   });
             }
           });
-          chrome.storage.sync.get(['time'], function(items) {
+          chrome.storage.local.get(['time'], function(items) {
             if(!items.time){
-                chrome.storage.sync.set({'time': 0}, function() {
+                chrome.storage.local.set({'time': 0}, function() {
                     console.info('Timer Created');
                   });
             }

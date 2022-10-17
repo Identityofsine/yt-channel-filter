@@ -178,14 +178,14 @@ async function ButtonOnClick(i){
 
 async function timerOnClick(){
     const timeBox = document.getElementById("timerContainer");
-    timeBox.onclick = () => {chrome.storage.sync.set({"time":0}, () => {}); console.log("CLEAR")};
+    timeBox.onclick = () => {chrome.storage.local.set({"time":0}, () => {}); console.log("CLEAR")};
     
 }
 
 async function grabTime(){
     const timeBox = document.getElementById("timerContainer");
     const timeText = timeBox;
-    await chrome.storage.sync.get(['time'], (data) => {
+    await chrome.storage.local.get(['time'], (data) => {
         time = data.time;
         timeText.innerText = new Date(time * 1000).toISOString().substr(11, 8);
     })

@@ -5,7 +5,7 @@ var reverse;
 var totalTime;
 var isAlreadyCounting;
 chrome.storage.sync.get(['channels'], (data) => {channels = data.channels;});
-chrome.storage.sync.get(['time'], (data) => {totalTime = data.time; console.info(data)});
+chrome.storage.local.get(['time'], (data) => {totalTime = data.time; console.info(data)});
 chrome.storage.local.get(['sleep'], (data) => {sleepTime = data.sleep;});
 chrome.storage.local.get(['reverse'], (data) => {reverse = data.reverse;});
 
@@ -15,7 +15,10 @@ async function saveChannels(channel){
 }
 
 async function saveTime(time){
-  await chrome.storage.sync.set({'time':time})
+  await chrome.storage.local.set({'time':time})
+}
+async function getTime(){
+  await chrome.storage.local.get(['time'], (data) => {totalTime = data.time;});
 }
 
 function removeChannel(channel){
@@ -38,6 +41,7 @@ const updateTime = async () => {
   isAlreadyCounting = true;
   while(true){
     //run this loop for ever(in the background)
+    await getTime();
     await sleep(1000); // wait one second
     totalTime = totalTime + 1;
     await saveTime(totalTime);
